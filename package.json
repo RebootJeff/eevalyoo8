@@ -1,0 +1,19 @@
+{
+  "name": "eevalyoo8",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha sumObjects/writeCodehere.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RebootJeff/eevalyoo8.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RebootJeff/eevalyoo8/issues"
+  },
+  "homepage": "https://github.com/RebootJeff/eevalyoo8#readme"
+}
