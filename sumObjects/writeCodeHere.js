@@ -8,7 +8,7 @@ function sumObjects(objs) {
 }
 
 
-// Run tests via command line: `npm test-sumObjects`
+// Run tests via command line: `npm test`
 
 describe('sumObjects', function() {
 

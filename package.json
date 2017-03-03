@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/RebootJeff/eevalyoo8/issues"
   },
-  "homepage": "https://github.com/RebootJeff/eevalyoo8#readme"
+  "homepage": "https://github.com/RebootJeff/eevalyoo8#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
 }
