@@ -1,6 +1,8 @@
 var _ = require('lodash');
 
 // Imagine there is other code for `NotificationsController` class.
+// User, Notification, and Company are mongoose models
+// Notification model uses https://github.com/edwardhotchkiss/mongoose-paginate
 
 NotificationsController.prototype.getUserNotifications = function(req, res, next) {
   var offset = req.query.offset;

@@ -4,6 +4,8 @@
 
 Read the code in the JavaScript file. It's inspired by real code I saw. I made it extra ugly! Let's pretend you're doing a code review to clean it up.
 
+Keep in mind that the code uses Mongoose models and also a pagination library.
+
 ## Instructions
 
 1. What do you think the code is intended to do?
