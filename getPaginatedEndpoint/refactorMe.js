@@ -38,7 +38,7 @@ NotificationsController.prototype.getUserNotifications = function(req, res, next
     subGroupQuery.recipients = {$in: [user.subGroup._id]};
     return Company.find({'employees.$id': user._id});
   })
-  .then(function(campaigns) {
+  .then(function(companies) {
     companyQuery.recipients = {$in: _.map(companies, '_id')};
     return Notification.paginate({}, {
       offset: offset,
