@@ -29,10 +29,6 @@ NotificationsController.prototype.getUserNotifications = function(req, res, next
 
   return User.findById(userId)
   .then(function(user) {
-    if (!user) {
-      throw new NotFoundError('No such User: ' + userId);
-    }
-
     notificationsReadAt = user.notifications_read_at;
     userQuery.recipients = {$in: [user._id]};
     subGroupQuery.recipients = {$in: [user.subGroup._id]};
