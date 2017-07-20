@@ -25,5 +25,7 @@ var result = sumObjects([obj1, obj2]);
 
 1. Open the JavaScript file.
 1. Add any `npm` packages you want.
+1. Run `npm install` if you'd like to use the provided testing setup.
 1. Write a solution with unit tests.
   - You don't have to use a test-first approach. It's up to you.
+  - Run `npm test` to run the provided testing setup.
