@@ -1,10 +1,22 @@
 var _ = require('lodash');
 
-// Imagine there is other code for `NotificationsController` class.
 // User, Notification, and Company are mongoose models
-// Notification model uses https://github.com/edwardhotchkiss/mongoose-paginate
+var User = require('../models/user.js');
+var Company = require('../models/company.js');
+// Notification model uses `mongoose-paginate` plugin
+var Notification = require('../models/notification.js');
 
-NotificationsController.prototype.getUserNotifications = function(req, res, next) {
+// Imagine there is other code for `NotificationsController`,
+// but we will focus on just 1 method.
+
+/*
+ * getUserNotifications
+ * Find all unread notifications that a given user should see.
+ * This includes notifications with `.recipient` = the user,
+ * `.recipient` = the subgroup that the user belongs to,
+ * and `.recipient` = the company that the user owns.
+*/
+NotificationsController.getUserNotifications = function(req, res, next) {
   var offset = req.query.offset;
   var limit = req.query.limit;
   var userId = new ObjectId(req.param('userId'));
@@ -29,13 +41,20 @@ NotificationsController.prototype.getUserNotifications = function(req, res, next
 
   return User.findById(userId)
   .then(function(user) {
-    notificationsReadAt = user.notifications_read_at;
-    userQuery.recipients = {$in: [user._id]};
-    subGroupQuery.recipients = {$in: [user.subGroup._id]};
-    return Company.find({'employees.$id': user._id});
+    notificationsReadAt = user.notificationsReadAt;
+    userQuery.recipient = {$in: [user._id]};
+    subGroupQuery.recipient = {$in: [user.subGroup._id]};
+
+    return Company.find({'owner.$id': user._id});
   })
   .then(function(companies) {
-    companyQuery.recipients = {$in: _.map(companies, '_id')};
+    var companyIds = [];
+    companies.forEach(function(company) {
+      companyIds.push(company._id);
+    });
+
+    companyQuery.recipient = {$in: companyIds};
+
     return Notification.paginate({}, {
       offset: offset,
       limit: limit,
@@ -46,19 +65,19 @@ NotificationsController.prototype.getUserNotifications = function(req, res, next
   .then(function(results) {
     response = results;
 
+    // Check for `notificationsReadAt` because a new user wouldn't have read any
+    // yet, so their `notificationsReadAt` would be undefined.
     if (notificationsReadAt) {
       var unreadQuery = _.extend({
-        createdAt: {
-          $gt: notificationsReadAt
-        }
+        createdAt: { $gt: notificationsReadAt }
       }, query);
       return Notification.count(unreadQuery);
     }
 
     return Notification.count(query);
   })
-  .then(function(unread){
-    response.unread = unread;
+  .then(function(unreadCount){
+    response.unreadCount = unreadCount;
     this.addHeaders(res);
     res.send(response);
   }, function(err) {
@@ -66,4 +85,4 @@ NotificationsController.prototype.getUserNotifications = function(req, res, next
   });
 }
 
-module.exports = new NotificationsController();
+module.exports = NotificationsController;
